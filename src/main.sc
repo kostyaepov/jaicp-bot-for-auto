@@ -1,6 +1,5 @@
 theme: /general
 
-// Стартовое состояние бота
 state: start
     intent: (привет|здравствуй|начать|приветствую|добрый день|добрый вечер|доброе утро)
     script:
@@ -32,7 +31,6 @@ state: start
         $session.max_mileage = "{пробег}"
         goto search_state
 
-// Состояние поиска авто
 state: search_state
     script:
         $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
