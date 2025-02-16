@@ -19,7 +19,7 @@ channels:
 external:
   crwl_api:
     base_url: "https://crwl.ru/api/rest/latest/get_ads/"
-    api_key: "ТВОЙ_API_КЛЮЧ"
+    api_key: "cae10e7c3cebf6484c335c36b364fd2e"
 
 # Настройки логирования (можно включить для отладки)
 logging:
