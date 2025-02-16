@@ -3,3 +3,4 @@ entryPoint: main.sc
 channels:
   telegram:
     token: "7807999237:AAHnPfzOcMjsEFLjBiMRtEnfM7Fo0GuN7zQ"
+    polling: true  # Убедитесь, что используется правильный режим работы
