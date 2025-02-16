@@ -31,7 +31,7 @@ start
 
 search_state
     // Формируем URL запроса к API crwl.ru
-    $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=ТВОЙ_API_КЛЮЧ"
+    $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=cae10e7c3cebf6484c335c36b364fd2e"
 
     if $session.make
         $query += "&make=" + $session.make
