@@ -9,7 +9,7 @@ bot:
 channels:
   telegram:
     enabled: true
-    token: "ТВОЙ_TELEGRAM_BOT_TOKEN"
+    token: "7807999237:AAHnPfzOcMjsEFLjBiMRtEnfM7Fo0GuN7zQ"
   webhooks:
     enabled: true
   jaicp:
