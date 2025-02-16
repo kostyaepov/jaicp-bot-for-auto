@@ -1,9 +1,5 @@
-name: golosovoj_assistent
-description: Голосовой ассистент для поиска авто
-language: ru
+projectName: golosovoj_assistent
+entryPoint: src/main.sc
 channels:
   telegram:
-    enabled: true
-    token: 7807999237:AAHnPfzOcMjsEFLjBiMRtEnfM7Fo0GuN7zQ
-http:
-  enabled: true
+    token: "7807999237:AAHnPfzOcMjsEFLjBiMRtEnfM7Fo0GuN7zQ"
