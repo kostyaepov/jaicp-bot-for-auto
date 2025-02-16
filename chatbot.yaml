@@ -1,15 +1,8 @@
-name: zb-cailapub
-
-entryPoint: main.sc
-
-botEngine: v2
-language: ru
-
-tests:
-  include:
-    - test.xml
-
-nlp:
-  intentNoMatchThresholds:
-    phrases: 0.2
-    patterns: 0.2
+project:
+  id: "golosovoj_assistent"
+  name: "Голосовой ассистент"
+  description: "Поиск авто"
+  languages: ["ru"]
+  channels:
+    - type: "chatwidget"
+    - type: "telegram"
