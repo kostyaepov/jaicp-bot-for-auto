@@ -1,67 +1,64 @@
-theme: /general
+// Указываем тему перед состояниями
+theme /general
 
-state: start
-    intent: (привет|здравствуй|начать|приветствую|добрый день|добрый вечер|доброе утро)
-    script:
-        say "Привет! Я помогу найти авто 🚗"
-        say "Введите марку, модель, цену, пробег и другие параметры."
+// Стартовое состояние бота
+state start
+    intent приветствие
+        Привет! Я помогу найти авто 🚗  
+        Введите марку, модель, цену, пробег и другие параметры.
 
-    intent: (Найди|Подбери|Покажи) {марка}
-    script:
-        $session.make = "{марка}"
-        goto search_state
+    intent поиск_марки (Найди|Подбери|Покажи) {марка}
+        $session.make = {марка}
+        -> search_state
 
-    intent: (Найди|Подбери|Покажи) {марка} {модель}
-    script:
-        $session.make = "{марка}"
-        $session.model = "{модель}"
-        goto search_state
+    intent поиск_модели (Найди|Подбери|Покажи) {марка} {модель}
+        $session.make = {марка}
+        $session.model = {модель}
+        -> search_state
 
-    intent: (Найди|Подбери|Покажи) {марка} до {цена} рублей
-    script:
-        $session.make = "{марка}"
-        $session.max_price = "{цена}"
-        goto search_state
+    intent поиск_по_цене (Найди|Подбери|Покажи) {марка} до {цена} рублей
+        $session.make = {марка}
+        $session.max_price = {цена}
+        -> search_state
 
-    intent: (Найди|Покажи|Помоги найти) {марка} {модель} до {цена} рублей с пробегом до {пробег} км
-    script:
-        $session.make = "{марка}"
-        $session.model = "{модель}"
-        $session.max_price = "{цена}"
-        $session.max_mileage = "{пробег}"
-        goto search_state
+    intent поиск_с_пробегом (Найди|Покажи|Помоги найти) {марка} {модель} до {цена} рублей с пробегом до {пробег} км
+        $session.make = {марка}
+        $session.model = {модель}
+        $session.max_price = {цена}
+        $session.max_mileage = {пробег}
+        -> search_state
 
-state: search_state
-    script:
-        $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
-        
-        if $session.make:
-            $query += "&make=" + $session.make
-        if $session.model:
-            $query += "&model=" + $session.model
-        if $session.max_price:
-            $query += "&max_price=" + $session.max_price
-        if $session.max_mileage:
-            $query += "&max_mileage=" + $session.max_mileage
+// Состояние поиска авто
+state search_state
+    $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
 
-        $http.get($query) > response
+    if $session.make
+        $query += "&make=" + $session.make
+    if $session.model
+        $query += "&model=" + $session.model
+    if $session.max_price
+        $query += "&max_price=" + $session.max_price
+    if $session.max_mileage
+        $query += "&max_mileage=" + $session.max_mileage
 
-        if response.status == "Failed":
-            say "❌ Ошибка API: " + response.msg
-            say "Попробуйте позже."
-            goto start
+    $http.get($query) > response
 
-        $cars = response.cars
-        if $cars.size > 0:
-            say "✅ Найдено несколько вариантов:"
-            for $car in $cars[0:3]:
-                say "➤ **" + $car.make + " " + $car.model + " " + $car.year + "**"
-                say "💰 Цена: **" + $car.price + " ₽**"
-                say "🚗 Пробег: **" + $car.mileage + " км**"
-                say "⛽ Топливо: **" + $car.fuel_type + "**"
-                say "📍 Город: **" + $car.region + "**"
-                say "🔗 [Ссылка на объявление](" + $car.url + ")"
-            say "🔍 Хотите уточнить поиск?"
-        else:
-            say "❌ Ничего не найдено 😢 Попробуйте изменить параметры."
-            goto start
+    if response.status == "Failed"
+        ❌ Ошибка API: $response.msg
+        Попробуйте позже.
+        -> start
+
+    $cars = response.cars
+    if $cars.size > 0
+        ✅ Найдено несколько вариантов:
+        for $car in $cars[0:3]
+            ➤ **$car.make $car.model $car.year**
+            💰 Цена: **$car.price ₽**
+            🚗 Пробег: **$car.mileage км**
+            ⛽ Топливо: **$car.fuel_type**
+            📍 Город: **$car.region**
+            🔗 [Ссылка на объявление]($car.url)
+        🔍 Хотите уточнить поиск?
+    else
+        ❌ Ничего не найдено 😢 Попробуйте изменить параметры.
+        -> start
