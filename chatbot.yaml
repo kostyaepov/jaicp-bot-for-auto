@@ -1,5 +1,5 @@
 projectName: golosovoj_assistent
-entryPoint: src/main.sc
+entryPoint: main.sc
 channels:
   telegram:
     token: "7807999237:AAHnPfzOcMjsEFLjBiMRtEnfM7Fo0GuN7zQ"
