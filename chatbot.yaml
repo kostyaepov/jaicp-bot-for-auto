@@ -1,8 +1,39 @@
-project:
-  id: "golosovoj_assistent"
-  name: "Голосовой ассистент"
-  description: "Поиск авто"
-  languages: ["ru"]
-  channels:
-    - type: "chatwidget"
-    - type: "telegram"
+# Основная конфигурация чат-бота
+bot:
+  name: "Голосовой ассистент для авто"
+  description: "Бот помогает находить объявления по продаже автомобилей по различным параметрам."
+  language: "ru"  # Русский язык
+  version: "1.0"
+
+# Каналы, в которых работает бот (например, Telegram, ВКонтакте и т.д.)
+channels:
+  telegram:
+    enabled: true
+    token: "ТВОЙ_TELEGRAM_BOT_TOKEN"
+  webhooks:
+    enabled: true
+  jaicp:
+    enabled: true
+
+# Подключение API-ключа для crwl.ru
+external:
+  crwl_api:
+    base_url: "https://crwl.ru/api/rest/latest/get_ads/"
+    api_key: "ТВОЙ_API_КЛЮЧ"
+
+# Настройки логирования (можно включить для отладки)
+logging:
+  level: "INFO"  # Возможные уровни: DEBUG, INFO, WARNING, ERROR
+
+# Основной файл сценария
+scripts:
+  - "src/main.sc"
+
+# Настройки NLU (Natural Language Understanding) для лучшего понимания запросов
+nlu:
+  intent_threshold: 0.7  # Минимальная уверенность для срабатывания намерения
+  entity_recognition: true  # Включение поиска сущностей (марка, модель, цена и т.д.)
+
+# Переменные сессии
+session:
+  timeout: 300  # Время жизни сессии (в секундах)
