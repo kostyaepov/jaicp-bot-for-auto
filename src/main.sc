@@ -1,135 +1,67 @@
-# Настройки проекта
-theme: /general
+start
+    intent (привет|здравствуй|начать|приветствую|добрый день|добрый вечер|доброе утро)
+        - Привет! Я помогу найти авто 🚗  
+        - Введите марку, модель, цену, пробег и другие параметры.
 
-# Сценарий диалога
-script
+    intent (Найди|Подбери|Покажи) {марка}
+        $session.make = {марка}
+        -> search_state
 
-    # Начало беседы
-    step
-        message Привет! Я помогу найти авто 🚗. Введите марку, модель, цену, пробег и другие параметры.
-        next ask_user
+    intent (Найди|Подбери|Покажи) {марка} {модель}
+        $session.make = {марка}
+        $session.model = {модель}
+        -> search_state
 
-    # Ожидание ввода пользователя
-    step ask_user
-        input
-        next check_intent
+    intent (Найди|Подбери|Покажи) {марка} до {цена} рублей
+        $session.make = {марка}
+        $session.max_price = {цена}
+        -> search_state
 
-    # Обработка интентов
-    step check_intent
-        condition
-            value text
-            equals (привет|здравствуй|начать|приветствую|добрый день|добрый вечер|доброе утро)
-            next greet_user
+    intent (Найди|Покажи|Помоги найти) {марка} {модель} до {цена} рублей с пробегом до {пробег} км
+        $session.make = {марка}
+        $session.model = {модель}
+        $session.max_price = {цена}
+        $session.max_mileage = {пробег}
+        -> search_state
 
-        condition
-            value text
-            matches (Найти|Подобрать|Показать) {марка}
-            next find_car_by_make
+search_state
+    $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
 
-        condition
-            value text
-            matches (Найти|Подобрать|Показать) {марка} {модель}
-            next find_car_by_make_and_model
+    if $session.make
+        $query += "&make=" + $session.make
 
-        condition
-            value text
-            matches (Найти|Подобрать|Показать) {марка} до {цена} рублей
-            next find_car_by_make_and_price
+    if $session.model
+        $query += "&model=" + $session.model
 
-        condition
-            value text
-            matches (Найти|Подобрать|Помочь найти) {марка} {модель} до {цена} рублей с пробегом до {пробег} км
-            next find_car_by_all_params
+    if $session.max_price
+        $query += "&max_price=" + $session.max_price
 
-        condition
-            next unknown_command
+    if $session.max_mileage
+        $query += "&max_mileage=" + $session.max_mileage
 
-    # Приветствие пользователя
-    step greet_user
-        message Привет! Готов помочь вам с поиском автомобиля.
-        next ask_user
+    $http.get($query) > response
 
-    # Поиск машины по марке
-    step find_car_by_make
-        script_call find_car(make={text.match(1)})
-        next show_results
-
-    # Поиск машины по марке и модели
-    step find_car_by_make_and_model
-        script_call find_car(make={text.match(1)}, model={text.match(2)})
-        next show_results
-
-    # Поиск машины по марке и цене
-    step find_car_by_make_and_price
-        script_call find_car(make={text.match(1)}, max_price={text.match(2)})
-        next show_results
-
-    # Поиск машины по всем параметрам
-    step find_car_by_all_params
-        script_call find_car(make={text.match(1)}, model={text.match(2)}, max_price={text.match(3)}, max_mileage={text.match(4)})
-        next show_results
-
-    # Неизвестная команда
-    step unknown_command
-        message Не совсем понял ваш запрос. Пожалуйста, уточните критерии поиска.
-        next ask_user
-
-    # Показ результатов поиска
-    step show_results
-        condition
-            value result
-            equals []
-            next no_cars_found
-
-        condition
-            next display_cars
-
-    # Отображение информации о машинах
-    step display_cars
-        message ✅ Найдено несколько вариантов:
-        foreach car in result
-            message |
-                ➤ **{car.make} {car.model} {car.year}**
-                💰 Цена: **{car.price} ₽**
-                🚗 Пробег: **{car.mileage} км**
-                ⛽ Топливо: **{car.fuel_type}**
-                📍 Город: **{car.region}**
-                🔗 [Ссылка на объявление]({car.url})
-        message 🔍 Хотите уточнить поиск?
-        next ask_user
-
-    # Если машины не найдены
-    step no_cars_found
-        message ❌ Ничего не найдено 😢 Попробуйте изменить параметры.
-        next ask_user
-
-end_script
-
-# Функция поиска машины
-function find_car(make, model=null, max_price=null, max_mileage=null)
-    # Формируем URL запроса к API
-    set query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
-    
-    # Добавляем параметры поиска
-    if make != null
-        append query &= "&make=" & make
-        
-    if model != null
-        append query &= "&model=" & model
-        
-    if max_price != null
-        append query &= "&max_price=" & max_price
-        
-    if max_mileage != null
-        append query &= "&max_mileage=" & max_mileage
-
-    # Выполняем HTTP запрос
-    http get query > response
-
-    # Проверяем статус ответа
     if response.status == "Failed"
-        return []
+        - ❌ Ошибка API: {response.msg}
+        - Попробуйте позже.
+        -> start
 
-    # Возвращаем список машин
-    return response.cars
-end_function
+    $cars = response.cars
+    if $cars.size > 0
+        - ✅ Найдено несколько вариантов:
+        $i = 0
+        while $i < 3 and $i < $cars.size
+            $car = $cars[$i]
+            - ➤ **{car.make} {car.model} {car.year}**
+            - 💰 Цена: **{car.price} ₽**
+            - 🚗 Пробег: **{car.mileage} км**
+            - ⛽ Топливо: **{car.fuel_type}**
+            - 📍 Город: **{car.region}**
+            - 🔗 [Ссылка на объявление]({car.url})
+            $i += 1
+        - 🔍 Хотите уточнить поиск?
+
+    else
+        - ❌ Ничего не найдено 😢 Попробуйте изменить параметры.
+        -> start
+end
