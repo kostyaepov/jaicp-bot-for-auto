@@ -1,4 +1,8 @@
-start
+require: name/name.sc
+    module = sys.zb-common
+
+theme: /
+state: Start
     intent (привет|здравствуй|начать|приветствую|добрый день|добрый вечер|доброе утро)
         - Привет! Я помогу найти авто 🚗  
         - Введите марку, модель, цену, пробег и другие параметры.
@@ -24,7 +28,7 @@ start
         $session.max_mileage = {пробег}
         -> search_state
 
-search_state
+state: search_state
     $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
 
     if $session.make
