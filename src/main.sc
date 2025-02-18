@@ -6,19 +6,19 @@ state("start") {
 
     intent("Найди|Подбери|Покажи {марка}") {
         $session.make = "{марка}"
-        -> search_state
+        -> state("search_state")
     }
 
     intent("Найди|Подбери|Покажи {марка} {модель}") {
         $session.make = "{марка}"
         $session.model = "{модель}"
-        -> search_state
+        -> state("search_state")
     }
 
     intent("Найди|Подбери|Покажи {марка} до {цена} рублей") {
         $session.make = "{марка}"
         $session.max_price = "{цена}"
-        -> search_state
+        -> state("search_state")
     }
 
     intent("Найди|Покажи|Помоги найти {марка} {модель} до {цена} рублей с пробегом до {пробег} км") {
@@ -26,35 +26,37 @@ state("start") {
         $session.model = "{модель}"
         $session.max_price = "{цена}"
         $session.max_mileage = "{пробег}"
-        -> search_state
+        -> state("search_state")
     }
 }
 
 state("search_state") {
-    $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
+    script {
+        $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
 
-    if ($session.make) {
-        $query += "&make=" + $session.make
+        if ($session.make) {
+            $query += "&make=" + $session.make
+        }
+
+        if ($session.model) {
+            $query += "&model=" + $session.model
+        }
+
+        if ($session.max_price) {
+            $query += "&max_price=" + $session.max_price
+        }
+
+        if ($session.max_mileage) {
+            $query += "&max_mileage=" + $session.max_mileage
+        }
+
+        $http.get($query) > $response
     }
-
-    if ($session.model) {
-        $query += "&model=" + $session.model
-    }
-
-    if ($session.max_price) {
-        $query += "&max_price=" + $session.max_price
-    }
-
-    if ($session.max_mileage) {
-        $query += "&max_mileage=" + $session.max_mileage
-    }
-
-    $http.get($query) > $response
 
     if ($response.status == "Failed") {
         - ❌ Ошибка API: {$response.msg}
         - Попробуйте позже.
-        -> start
+        -> state("start")
     }
 
     $cars = $response.cars
@@ -74,6 +76,6 @@ state("search_state") {
         - 🔍 Хотите уточнить поиск?
     } else {
         - ❌ Ничего не найдено 😢 Попробуйте изменить параметры.
-        -> start
+        -> state("start")
     }
 }
