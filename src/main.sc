@@ -23,7 +23,7 @@ state("start"){
         $session.max_price = {цена}
         $session.max_mileage = {пробег}
         -> search_state
-    }
+}
 state("search_state") {
     $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f"
 
@@ -64,4 +64,4 @@ state("search_state") {
     else
         - ❌ Ничего не найдено 😢 Попробуйте изменить параметры.
         -> start
-    }
+}
