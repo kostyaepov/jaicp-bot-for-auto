@@ -6,19 +6,19 @@ state("start") {
 
     intent("Найди|Подбери|Покажи {марка}") {
         $session.make = "{марка}"
-        -> state("search_state")
+        -> search_state
     }
 
     intent("Найди|Подбери|Покажи {марка} {модель}") {
         $session.make = "{марка}"
         $session.model = "{модель}"
-        -> state("search_state")
+        -> search_state
     }
 
     intent("Найди|Подбери|Покажи {марка} до {цена} рублей") {
         $session.make = "{марка}"
         $session.max_price = "{цена}"
-        -> state("search_state")
+        -> search_state
     }
 
     intent("Найди|Покажи|Помоги найти {марка} {модель} до {цена} рублей с пробегом до {пробег} км") {
@@ -26,7 +26,7 @@ state("start") {
         $session.model = "{модель}"
         $session.max_price = "{цена}"
         $session.max_mileage = "{пробег}"
-        -> state("search_state")
+        -> search_state
     }
 }
 
@@ -56,7 +56,7 @@ state("search_state") {
     if ($response.status == "Failed") {
         - ❌ Ошибка API: {$response.msg}
         - Попробуйте позже.
-        -> state("start")
+        -> start
     }
 
     $cars = $response.cars
@@ -76,6 +76,6 @@ state("search_state") {
         - 🔍 Хотите уточнить поиск?
     } else {
         - ❌ Ничего не найдено 😢 Попробуйте изменить параметры.
-        -> state("start")
+        -> start
     }
 }
