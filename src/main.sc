@@ -1,4 +1,4 @@
-    theme /general
+theme /general
     
     state start
         intent Приветствие
