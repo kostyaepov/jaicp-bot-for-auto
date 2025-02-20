@@ -23,44 +23,17 @@
     }
   },
   "intents" : [ {
-    "path" : "/Приветствие",
-    "answer" : "Здравствуйте, Привет, Хай",
-    "enabled" : true,
-    "shared" : false,
-    "phrases" : [ {
-      "text" : "Начать"
-    }, {
-      "text" : "Здравствуйте"
-    }, {
-      "text" : "Привет"
-    } ],
-    "classificationRules" : {
-      "refs" : [ ]
-    },
-    "patterns" : [ ],
-    "slots" : [ {
-      "name" : "Марка",
-      "entity" : "Марка",
-      "required" : false,
-      "prompts" : [ ]
-    } ],
-    "priority" : 0
-  }, {
     "path" : "/Поиск авто",
     "enabled" : true,
     "shared" : false,
     "phrases" : [ {
-      "text" : "Найди мне"
+      "text" : "Найди мне {Марка} {Модель} {Год} года"
     }, {
-      "text" : "Покажи мне"
+      "text" : "Покажи мне {Марка} {Модель} {Год} года"
     }, {
-      "text" : "Мне нужна"
+      "text" : "Найди {Марка} {Модель} {Год} года"
     }, {
-      "text" : "Мне нужен"
-    }, {
-      "text" : "Покажи"
-    }, {
-      "text" : "Найди"
+      "text" : "Покажи {Марка} {Модель} {Год} года"
     } ],
     "classificationRules" : {
       "refs" : [ ]
@@ -74,9 +47,41 @@
     }, {
       "name" : "Модель",
       "entity" : "Модель",
-      "required" : true,
+      "required" : false,
+      "prompts" : [ ]
+    }, {
+      "name" : "Год",
+      "entity" : "Год",
+      "required" : false,
       "prompts" : [ ]
     } ],
+    "priority" : 0
+  }, {
+    "path" : "/Приветствие",
+    "answer" : "Привет \nЗдравствуй\nЗдравствуйте",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Привет"
+    }, {
+      "text" : "Здравствуй"
+    }, {
+      "text" : "Хай"
+    }, {
+      "text" : "Добрый день"
+    }, {
+      "text" : "Доброе утро"
+    }, {
+      "text" : "Ватсап"
+    }, {
+      "text" : "Добрый вечер"
+    }, {
+      "text" : "Начать"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
     "priority" : 0
   } ],
   "entities" : [ {
@@ -191,6 +196,165 @@
     }, {
       "type" : "synonyms",
       "rule" : [ "Mustang", "Мустанг" ],
+      "value" : ""
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Год",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "2000" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1997" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1998" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2001" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2002" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2003" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2004" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2006" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2012" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2013" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2015" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2016" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2019" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2021" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2022" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1991" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1992" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1993" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1996" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2008" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2010" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2020" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2023" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2025" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1990" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1994" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1995" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "1999" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2005" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2007" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2009" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2011" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2014" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2017" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2018" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "2024" ],
       "value" : ""
     } ]
   } ],

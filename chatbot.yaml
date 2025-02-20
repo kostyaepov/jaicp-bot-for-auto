@@ -1,18 +1,11 @@
 projectName: golosovoj_assistent
 entryPoint: main.sc
 nlu:
-  type: jaicp
-  intents:
-    - приветствие
-    - поиск_авто
-    - уточнение_поиска
-    - ошибка_API
-  entities:
-    - Марка
-    - Модель
-    
+  enabled: true
 channels:
   telegram:
     token: "7807999237:AAHnPfzOcMjsEFLjBiMRtEnfM7Fo0GuN7zQ"
+
+    
 
   
