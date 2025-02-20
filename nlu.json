@@ -23,29 +23,177 @@
     }
   },
   "intents" : [ {
-    "path" : "/пока",
+    "path" : "/Приветствие",
+    "answer" : "Здравствуйте, Привет, Хай",
     "enabled" : true,
     "shared" : false,
     "phrases" : [ {
-      "text" : "пока"
+      "text" : "Начать"
+    }, {
+      "text" : "Здравствуйте"
+    }, {
+      "text" : "Привет"
     } ],
     "classificationRules" : {
       "refs" : [ ]
     },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "Марка",
+      "entity" : "Марка",
+      "required" : false,
+      "prompts" : [ ]
+    } ],
     "priority" : 0
   }, {
-    "path" : "/привет",
+    "path" : "/Поиск авто",
     "enabled" : true,
     "shared" : false,
     "phrases" : [ {
-      "text" : "привет"
+      "text" : "Найди мне"
+    }, {
+      "text" : "Покажи мне"
+    }, {
+      "text" : "Мне нужна"
+    }, {
+      "text" : "Мне нужен"
+    }, {
+      "text" : "Покажи"
+    }, {
+      "text" : "Найди"
     } ],
     "classificationRules" : {
       "refs" : [ ]
     },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "Марка",
+      "entity" : "Марка",
+      "required" : true,
+      "prompts" : [ ]
+    }, {
+      "name" : "Модель",
+      "entity" : "Модель",
+      "required" : true,
+      "prompts" : [ ]
+    } ],
     "priority" : 0
   } ],
-  "entities" : [ ],
+  "entities" : [ {
+    "entity" : {
+      "name" : "Марка",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "Lada", "Лада", "ЛАДА" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "MItsubishi", "Митцубиши", "Митсубиши" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Honda", "Хонда" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Toyota", "Тайота", "Тойота" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Mercedes", "Мэрседес", "Мерседес" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "BMW", "бмв", "БМВ", "Бмв" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Ford" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "KIA", "Киа", "КИА" ],
+      "value" : ""
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Модель",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "RAV4", "Раф4", "Рафчетыре" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Corona", "Корона", "Корону" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Priora", "Приора", "Приору" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Веста", "Vesta" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Corolla", "Королла" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Land Cruiser", "Лэнд Крузер" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Kalina", "Калина" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Civic", "Сивик" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Фокус" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Accord", "Аккорд" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Camry" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Supra", "Супра" ],
+      "value" : ""
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Mustang", "Мустанг" ],
+      "value" : ""
+    } ]
+  } ],
   "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
   "spellerDictionary" : [ ],
   "systemEntities" : [ {
