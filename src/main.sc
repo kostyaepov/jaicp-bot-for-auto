@@ -1,33 +1,30 @@
-theme /general
+theme: /general
+    
+    states:
+      start:
+        intent: Приветствие
+        action:
+          - reply: "Привет! Я могу помочь найти объявления о продаже автомобилей. Скажи марку, модель и год выпуска."
+      
+      search_state:
+        intent: Поискавто
+        action:
+          - $make = nlu.value("Марка")
+          - $model = nlu.value("Модель")
+          - $year = nlu.value("Год")
+          - if $make and $model and $year:
+              - $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f&make=" + $make + "&model=" + $model + "&year=" + $year
+              - $http.get($query) > response
+              - if response.status == "Failed":
+                  - reply: "Ошибка при получении данных. Попробуйте снова."
+              - else:
+                  - $cars = response.cars
+                  - if $cars.size > 0:
+                      - reply: "Я нашел " + $cars.size + " объявлений:"
+                      - for $car in $cars:
+                          - reply: $car.url
+                  - else:
+                      - reply: "❌ Ничего не найдено 😢 Попробуйте изменить параметры."
+          - else:
+              - reply: "Не смог распознать запрос. Попробуйте сказать, например: 'Найди Toyota Camry 2010'."
 
-state start
-    intent Greeting
-        reactions
-            telegram.say "Привет! Я помогу найти машину. Просто скажите марку, модель и год выпуска."
-
-    intent SearchCar
-        reactions
-            $make = "{{Марка}}"
-            $model = "{{Модель}}"
-            $year = "{{Год}}"
-
-            $query = "https://crwl.ru/api/rest/latest/get_ads/?api_key=4309e95538b30c8ae3998ce980df9a1f&make=" + $make + "&model=" + $model + "&year=" + $year
-
-            $http.get($query) > response
-
-            if response.status == "Failed"
-                telegram.say "Ошибка при получении данных. Попробуйте снова."
-                exit
-
-            $cars = response.cars
-
-            if $cars.size > 0
-                telegram.say "Я нашел " + $cars.size + " объявлений для вас!"
-                for $car in $cars
-                    telegram.say "🚗 " + $car.title + "\n🔗 " + $car.url
-            else
-                telegram.say "❌ Ничего не найдено. Попробуйте изменить параметры."
-
-    fallback
-        reactions
-            telegram.say "Извините, я не понял запрос. Попробуйте сказать марку, модель и год авто."
